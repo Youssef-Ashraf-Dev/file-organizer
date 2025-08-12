@@ -9,7 +9,8 @@ FILE_EXT_MAPPINGS = {
     # Images
     ".jpg": "Images", ".jpeg": "Images", ".png": "Images", ".gif": "Images",
     # Documents
-    ".pdf": "Documents", ".docx": "Documents", ".txt": "Documents",
+    ".pdf": "Documents", ".docx": "Documents", ".txt": "Documents", ".pptx": "Documents",
+    ".xlsx": "Documents", ".csv": "Documents",
     # Videos
     ".mp4": "Videos", ".mov": "Videos", ".avi": "Videos", "mkv": "Videos", "ts": "Videos",
     # Audio
@@ -18,12 +19,7 @@ FILE_EXT_MAPPINGS = {
     ".zip": "Archives", ".rar": "Archives", ".tar": "Archives", ".gz": "Archives", ".7z": "Archives",
     # Code files
     ".py": "Code", ".js": "Code", ".html": "Code", ".css": "Code", ".java": "Code",
-    # Spreadsheets
-    ".xlsx": "Spreadsheets", ".csv": "Spreadsheets",
-    # Presentations
-    ".pptx": "Presentations", ".key": "Presentations",
 }
-
 # Default category for files that do not match any known extension
 OTHER_CATEGORY = "Others"
 
