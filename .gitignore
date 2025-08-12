@@ -1,3 +1,11 @@
+# Python
 __pycache__/
 *.pyc
+
+# Virtual Environment
 venv/
+.venv/
+env/
+
+# test directories
+test_files/
