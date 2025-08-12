@@ -12,11 +12,11 @@ FILE_EXT_MAPPINGS = {
     ".pdf": "Documents", ".docx": "Documents", ".txt": "Documents", ".pptx": "Documents",
     ".xlsx": "Documents", ".csv": "Documents",
     # Videos
-    ".mp4": "Videos", ".mov": "Videos", ".avi": "Videos", "mkv": "Videos", "ts": "Videos",
+    ".mp4": "Videos", ".mov": "Videos", ".avi": "Videos", ".mkv": "Videos", ".ts": "Videos",
     # Audio
-    ".mp3": "Audio", ".wav": "Audio", ".flac": "Audio",
+    ".mp3": "Audio", ".wav": "Audio", ".aac": "Audio",
     # Archives
-    ".zip": "Archives", ".rar": "Archives", ".tar": "Archives", ".gz": "Archives", ".7z": "Archives",
+    ".zip": "Archives", ".rar": "Archives", ".7z": "Archives",
     # Code files
     ".py": "Code", ".js": "Code", ".html": "Code", ".css": "Code", ".java": "Code",
 }
