@@ -1,22 +1,4 @@
-"""File Organizer
-
-Organizes files in a target directory into subfolders by type (Images, Documents,
-Videos, Audio, Archives, Others). Provides a dry-run simulation mode, resolves
-filename collisions (e.g., "file (1).pdf"), and prints a categorized summary.
-
-Key features
-- Plans moves first (no side effects) to ensure predictable results
-- Collision-safe renaming using incremental suffixes
-- Simulation mode to preview changes
-- Skips common system/hidden metadata files
-- Clear, structured console output with totals
-
-Usage (PowerShell)
-  Simulate (no changes):
-    python organizer.py "D:\\path\\to\\folder" -s
-  Execute (perform moves):
-    python organizer.py "D:\\path\\to\\folder"
-"""
+"""File Organizer"""
 
 from __future__ import annotations
 
