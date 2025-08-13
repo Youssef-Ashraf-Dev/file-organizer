@@ -7,7 +7,7 @@ import argparse
 # This dictionary maps file extensions to their respective categories.
 FILE_EXT_MAPPINGS = {
     # Images
-    ".jpg": "Images", ".jpeg": "Images", ".png": "Images", ".gif": "Images",
+    ".jpg": "Images", ".jpeg": "Images", ".png": "Images", ".gif": "Images", ".webp" : "Images",
     # Documents
     ".pdf": "Documents", ".docx": "Documents", ".txt": "Documents", ".pptx": "Documents", ".xlsx": "Documents", ".csv": "Documents",
     # Videos
@@ -16,8 +16,6 @@ FILE_EXT_MAPPINGS = {
     ".mp3": "Audio", ".wav": "Audio", ".aac": "Audio",
     # Archives
     ".zip": "Archives", ".rar": "Archives", ".7z": "Archives",
-    # Code files
-    ".py": "Code", ".js": "Code", ".html": "Code", ".css": "Code", ".java": "Code",
 }
 # Default category for files that do not match any known extension
 OTHER_CATEGORY = "Others"
