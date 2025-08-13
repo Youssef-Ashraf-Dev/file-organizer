@@ -70,6 +70,9 @@ def organize_folder(folder_path: str) -> None:
     """
     print(f"Scanning folder: {folder_path}")
 
+    # Dictionary to track the number of files moved per category
+    files_moved_count = {}
+
     try:
         item_names = os.listdir(folder_path)
     except PermissionError:
@@ -123,10 +126,29 @@ def organize_folder(folder_path: str) -> None:
             # Show a relative path inside the target folder for clarity to the user
             moved_to = os.path.relpath(final_path, start=folder_path)
             print(f"Moved '{item_name}' -> '{moved_to}'")
+            
+            # Update the count for this category
+            files_moved_count[category] = files_moved_count.get(category, 0) + 1
+            
         except (PermissionError, OSError) as exc:
             print(f"Warning: Skipping '{item_name}' — {exc}")
             continue
 
+    # Display summary of files moved per category
+    print("\n" + "="*50)
+    print("ORGANIZATION SUMMARY")
+    print("="*50)
+    
+    if files_moved_count:
+        total_files = sum(files_moved_count.values())
+        print(f"Total files moved: {total_files}")
+        print()
+        for category, count in sorted(files_moved_count.items()):
+            print(f"  {category}: {count} file{'s' if count != 1 else ''}")
+    else:
+        print("No files were moved.")
+    
+    print("="*50)
     print("Organization complete.")
 
 
