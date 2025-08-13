@@ -3,6 +3,9 @@
 This is a command-line utility to organize files in a folder by type (Images, Documents, Videos, Audio, Archives, Others). 
 The script plans moves first, supports a dry-run simulation, resolves name collisions safely, and prints a clear summary with totals.
 
+## Chosen Option
+Option 1 – File Organizer
+
 ## Language and Tools
 - Language: Python 3
 - Standard Libraries: argparse, os, shutil, pathlib, collections
