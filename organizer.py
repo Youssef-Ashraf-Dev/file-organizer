@@ -76,10 +76,16 @@ def execute_plan(plan: list):
     
     Args:
         plan: A list of dictionaries representing the move plan.
+
+    Returns:
+        tuple[int, int]: (moved_count, skipped_count)
     """
     if not plan:
         print("No files to organize.")
-        return
+        return (0, 0)
+
+    moved_count = 0
+    skipped_count = 0
 
     for move in plan:
         source_path = move["source"]
@@ -90,8 +96,12 @@ def execute_plan(plan: list):
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(source_path, dest_path)
             print(f"Moved '{source_path.name}' -> '{dest_path.parent.name}/{dest_path.name}'")
+            moved_count += 1
         except (OSError, PermissionError) as e:
             print(f"  [SKIPPED] Could not move '{source_path.name}'. Reason: {e}")
+            skipped_count += 1
+
+    return moved_count, skipped_count
 
 def main():
     """Main function to parse arguments and control the workflow."""
@@ -107,25 +117,49 @@ def main():
         return
 
     try:
+        print(f"Folder: {target_folder}" + "\nScanning...")
         # 1. ALWAYS plan first
         move_plan, summary = plan_organization(target_folder)
 
         # 2. Decide what to do with the plan
         if args.simulate:
+            print("=" * 50)
             print("--- SIMULATION MODE ---")
-            for move in move_plan:
-                print(f"Would move '{move['source'].name}' -> '{move['destination'].parent.name}/{move['destination'].name}'")
+            print("=" * 50)
+            if not move_plan:
+                print("No files would be moved.")
+            else:
+                # Group planned moves by destination category for cleaner output
+                grouped = {}
+                for move in move_plan:
+                    category = move['destination'].parent.name
+                    grouped.setdefault(category, []).append(move)
+                total = len(move_plan)
+                print(f"Planned moves: {total} file(s)")
+                for category in sorted(grouped.keys()):
+                    print(f"  {category} ({len(grouped[category])}):")
+                    for move in sorted(grouped[category], key=lambda m: m['source'].name.lower()):
+                        print(f"    - {move['source'].name} -> {move['destination'].name}")
+                print(f"\nTotal files that would be moved: {total}")
         else:
+            print("=" * 50)
             print("--- EXECUTING ORGANIZATION ---")
-            execute_plan(move_plan)
+            print("=" * 50)
+            moved_count, skipped_count = execute_plan(move_plan)
+            print(f"\nTotal files moved: {moved_count}")
+            if skipped_count:
+                print(f"Total files skipped: {skipped_count}")
 
         # 3. Always print the summary
-        print("\n--- SUMMARY ---")
+        print("=" * 50)
+        print("--- SUMMARY ---")
+        print("=" * 50)
         if not summary:
             print("No files were categorized.")
         else:
             for category, count in sorted(summary.items()):
                 print(f"  {category}: {count} file(s)")
+            print(f"  TOTAL: {sum(summary.values())} file(s)")
             
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
