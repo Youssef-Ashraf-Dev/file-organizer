@@ -7,19 +7,7 @@ import shutil
 import argparse
 from pathlib import Path
 from collections import Counter
-from typing import TypedDict, List, Tuple
-
-
-class MoveOp(TypedDict):
-    """A single planned move operation.
-
-    Attributes:
-        source: The original file path to move.
-        destination: The final path (including any collision-safe renaming).
-    """
-
-    source: Path
-    destination: Path
+from typing import List, Tuple
 
 
 # Mapping of file extensions to categories. Extend as needed.
@@ -48,13 +36,10 @@ SKIP_FILENAMES = {
 }
 
 
-def plan_organization(folder_path: Path) -> Tuple[List[MoveOp], Counter]:
-    """Produce a collision-safe plan for organizing a folder.
-
-    This is a pure planning step with no side effects on disk. Files are
-    assigned to a destination subfolder based on their extension. When a
-    filename collision is detected (on disk or within the same planning run),
-    a numeric suffix " (n)" is appended to the stem to ensure uniqueness.
+def plan_organization(folder_path: Path) -> Tuple[List[dict[str, Path]], Counter]:
+    """Produce a collision-safe plan for organizing a folder. 
+    
+    This is a pure planning step with no side effects on disk.
 
     Args:
         folder_path: Directory to scan and plan organization for. Only files in
@@ -65,7 +50,7 @@ def plan_organization(folder_path: Path) -> Tuple[List[MoveOp], Counter]:
             - plan: Ordered list of planned moves, each with source and destination paths.
             - summary: Counter mapping category name -> number of files in that category.
     """
-    plan: List[MoveOp] = []
+    plan: List[dict[str, Path]] = []
     summary = Counter()
     # Track destination paths chosen during planning to avoid in-plan collisions.
     planned_destinations: set[Path] = set()
@@ -93,12 +78,10 @@ def plan_organization(folder_path: Path) -> Tuple[List[MoveOp], Counter]:
     return plan, summary
 
 
-def execute_plan(plan: List[MoveOp]) -> Tuple[int, int]:
+def execute_plan(plan: List[dict[str, Path]]) -> Tuple[int, int]:
     """Execute a previously generated move plan.
 
     Creates destination folders on demand and moves files per the plan.
-    Errors moving individual files are caught and reported without aborting
-    the entire run.
 
     Args:
         plan: The list produced by plan_organization.
@@ -135,9 +118,7 @@ def execute_plan(plan: List[MoveOp]) -> Tuple[int, int]:
 def main() -> None:
     """Entry point: parse CLI args, plan, and simulate or execute.
 
-    Prints a scan banner, then either a grouped simulation of the planned
-    moves or executes them and reports totals, followed by a categorized
-    summary of detected files.
+    Parses command line arguments to determine the folder to organize and whether to simulate or execute the organization.
     """
     parser = argparse.ArgumentParser(description="Organize files in a directory by type.")
     parser.add_argument("folder", type=str, help="The path to the folder to organize.")
@@ -165,7 +146,7 @@ def main() -> None:
                 print("No files would be moved.")
             else:
                 # Group planned moves by destination category for cleaner output
-                grouped: dict[str, list[MoveOp]] = {}
+                grouped: dict[str, list[dict[str, Path]]] = {}
                 for move in move_plan:
                     category = move['destination'].parent.name
                     grouped.setdefault(category, []).append(move)
